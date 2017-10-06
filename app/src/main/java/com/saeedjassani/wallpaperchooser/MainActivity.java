@@ -4,12 +4,15 @@ import android.Manifest;
 import android.app.WallpaperManager;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Display;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -18,11 +21,19 @@ public class MainActivity extends AppCompatActivity implements ImagesRecyclerAda
 
 	private static final int PERMISSION_CONSTANT = 0;
 	RecyclerView recyclerView;
+	public static int SCREEN_SIZE_WIDTH;
+	public static int SCREEN_SIZE_HEIGHT;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		SCREEN_SIZE_WIDTH = size.x;
+		SCREEN_SIZE_HEIGHT = size.y;
 
 		recyclerView = findViewById(R.id.recyler_view);
 		RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
@@ -36,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements ImagesRecyclerAda
 					PERMISSION_CONSTANT);
 
 		} else {
+			Log.d("Dev110", "onCreate: ");
 			recyclerView.setAdapter(new ImagesRecyclerAdapter(this, this));
 		}
 	}
